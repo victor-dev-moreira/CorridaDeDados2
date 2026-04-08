@@ -9,8 +9,7 @@ bool jogo = true;
 while (jogo)
 {
 
-    Console.WriteLine("Pressione Enter para comecar o jogo");
-    Console.ReadLine();
+    Console.WriteLine("Pressione Enter para Rolar o dado");
 
     int dado = +random.Next(1, 7);
     //int dado2 = +random.Next(1, 7);
@@ -50,6 +49,16 @@ while (jogo)
         Console.WriteLine("----------------------");
     }
 
+    if (pJ >= 30)
+    {
+        Console.WriteLine($"Jogador venceu chegando primeiro na posicão {pJ} o jogador é o vencedor!");
+        Console.WriteLine("-------------------------------------------------------------------------");
+        Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
+        jogo = false;
+        Console.ReadLine();
+        break;
+    }
+
     dado = +random.Next(1, 7);
     pM = pM + dado;
     Console.WriteLine("----------------------");
@@ -87,21 +96,15 @@ while (jogo)
         Console.WriteLine("----------------------");
     }
 
-    if (pJ >= 30)
-    {
-        Console.WriteLine($"Jogador venceu chegando primeiro na posicão {pJ} o jogador é o vencedor!");
-        Console.WriteLine("-------------------------------------------------------------------------");
-        Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
-        jogo = false;
-        Console.ReadLine();
-    }
-    else if (pM >= 30)
+
+    if (pM >= 30)
     {
         Console.WriteLine($"Maquina venceu chegando primeiro na posicão {pM} o jogador é o vencedor!");
         Console.WriteLine("-------------------------------------------------------------------------");
         Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
         jogo = false;
         Console.ReadLine();
+        break;
     }
 
 
