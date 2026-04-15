@@ -1,10 +1,10 @@
 ﻿using System.Security.Cryptography;
 class Program
 {
-    static int RodadaDoJogador(int posicaoJogador)
+    static int RodadaDoJogador(int posicaoJogador, int bonusAvanco, int penalidade)
     {
         Console.WriteLine("Rodada Do Jogador!");
-        Console.Write("Pressione Enter para Rolar o dado");
+        Console.Write("Pressione Enter para Rolar o dado! ");
         Console.ReadLine();
         int dado = RandomNumberGenerator.GetInt32(1, 7);
 
@@ -29,17 +29,15 @@ class Program
 
         if (posicaoJogador == 5 || posicaoJogador == 10 || posicaoJogador == 15)
         {
-            Console.WriteLine("----------------------");
             Console.WriteLine($"Jogador Caiu na posicão {posicaoJogador} e por isso ganhou mais 3 posicões!");
-            posicaoJogador = posicaoJogador + 3;
+            posicaoJogador = posicaoJogador + bonusAvanco;
             Console.WriteLine($"Jogador Posicão {posicaoJogador}");
             Console.WriteLine("----------------------");
         }
         else if (posicaoJogador == 7 || posicaoJogador == 13 || posicaoJogador == 20)
         {
-            Console.WriteLine("----------------------");
             Console.WriteLine($"Jogador Caiu na posicão {posicaoJogador} e por isso perdeu 2 posicões!");
-            posicaoJogador = posicaoJogador - 2;
+            posicaoJogador = posicaoJogador - penalidade;
             Console.WriteLine($"Jogador Posicão {posicaoJogador}");
             Console.WriteLine("----------------------");
         }
@@ -47,10 +45,10 @@ class Program
         return posicaoJogador;
     }
 
-    static int RodadaDoComputador(int posicaoComputador)
+    static int RodadaDoComputador(int posicaoComputador, int bonusAvanco, int penalidade)
     {
         Console.WriteLine("Rodada Do Computador!");
-        Console.WriteLine("Pressione Enter Para Rolar o Dado!");
+        Console.Write("Pressione Enter Para Rolar o Dado!");
         int dado = RandomNumberGenerator.GetInt32(1, 7);
         Console.ReadLine();
 
@@ -75,62 +73,92 @@ class Program
 
         if (posicaoComputador == 5 || posicaoComputador == 10 || posicaoComputador == 15)
         {
-            Console.WriteLine("----------------------");
             Console.WriteLine($"Maquina Caiu na posicão {posicaoComputador} e por isso ganhou mais 3 posicões!");
-            posicaoComputador = posicaoComputador + 3;
+            posicaoComputador = posicaoComputador + bonusAvanco;
+
             Console.WriteLine($"Maquina Posicão {posicaoComputador}");
             Console.WriteLine("----------------------");
         }
         else if (posicaoComputador == 7 || posicaoComputador == 13 || posicaoComputador == 20)
         {
-            Console.WriteLine("----------------------");
             Console.WriteLine($"Maquina Caiu na posicão {posicaoComputador} e por isso perdeu 2 posicões!");
-            posicaoComputador = posicaoComputador - 2;
+            posicaoComputador = posicaoComputador - penalidade;
             Console.WriteLine($"Maquina Posicão {posicaoComputador}");
             Console.WriteLine("----------------------");
         }
 
         return posicaoComputador;
     }
-    static void Main(string[] args)
+
+    static void TesteJogador(int posicaoJogador, int limite)
+    {
+        if (posicaoJogador >= limite)
+        {
+            Console.WriteLine($"Jogador venceu chegando primeiro na posicão {posicaoJogador} o jogador é o vencedor!");
+            Console.WriteLine("-------------------------------------------------------------------------");
+            Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
+            Console.ReadLine();
+        }
+    }
+
+    static void TesteComputador(int posicaoComputador, int limite)
     {
 
-        Console.WriteLine("Corrida De Dados");
-        Console.WriteLine("----------------------");
+        if (posicaoComputador >= limite)
+        {
+            Console.WriteLine($"Computador venceu chegando primeiro na posicão {posicaoComputador} o computador é o vencedor!");
+            Console.WriteLine("-------------------------------------------------------------------------");
+            Console.Write("Pressione Enter Para Finalizar o jogo! ");
+            Console.ReadLine();
+
+        }
+    }
+
+    static void Main(string[] args)
+    {
         int posicaoJogador = 0;
         int posicaoComputador = 0;
+        const int bonusAvanco = 3;
+        const int penalidade = 2;
+        const int limite = 30;
         bool jogo = true;
 
         while (jogo)
         {
-
-            posicaoJogador = RodadaDoJogador(posicaoJogador);
-
-            if (posicaoJogador >= 30)
+            Console.WriteLine("Corrida De Dados");
+            Console.WriteLine("----------------------");
+            while (true)
             {
-                Console.WriteLine($"Jogador venceu chegando primeiro na posicão {posicaoJogador} o jogador é o vencedor!");
-                Console.WriteLine("-------------------------------------------------------------------------");
-                Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
-                jogo = false;
-                Console.ReadLine();
-                break;
+
+                posicaoJogador = RodadaDoJogador(posicaoJogador, bonusAvanco, penalidade);
+
+                TesteJogador(posicaoJogador, limite);
+
+                if (posicaoJogador >= limite)
+                    break;
+
+                posicaoComputador = RodadaDoComputador(posicaoComputador, bonusAvanco, penalidade);
+
+                TesteComputador(posicaoComputador, limite);
+                if (posicaoComputador >= limite)
+                    break;
+
             }
+            Console.Write("Deseja Continuar Jogando? (S/N)");
+            string continuarJogando = Console.ReadLine().ToUpper();
 
-            posicaoComputador = RodadaDoComputador(posicaoComputador);
-
-
-            if (posicaoComputador >= 30)
+            if (continuarJogando == "S")
             {
-                Console.WriteLine($"Computador venceu chegando primeiro na posicão {posicaoComputador} o computador é o vencedor!");
-                Console.WriteLine("-------------------------------------------------------------------------");
-                Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
-                jogo = false;
+                Console.Write("Você Decidiu Continuar, Pressione enter! ");
                 Console.ReadLine();
-                break;
+                Console.Clear();
+                continue;
+
+            }
+            else
+            {
+                jogo = false;
             }
         }
     }
 }
-
-
-
