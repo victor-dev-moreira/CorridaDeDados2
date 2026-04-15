@@ -1,111 +1,136 @@
-﻿Console.WriteLine("Corrida De Dados");
-Console.WriteLine("----------------------");
-
-Random random = new Random();
-int pJ = 0;
-int pM = 0;
-bool jogo = true;
-
-while (jogo)
+﻿using System.Security.Cryptography;
+class Program
 {
-
-    Console.WriteLine("Pressione Enter para Rolar o dado");
-
-    int dado = +random.Next(1, 7);
-    //int dado2 = +random.Next(1, 7);
-
-    Console.WriteLine("----------------------");
-    Console.WriteLine($"Jogador rolou {dado}");
-    Console.WriteLine("----------------------");
-    pJ = pJ + dado;
-    Console.WriteLine($"Jogador p: {pJ}");
-
-    if (dado == 6)
+    static int RodadaDoJogador(int posicaoJogador)
     {
-        Console.WriteLine($"Como o jogador rolou {dado} no dado ganhou uma rodada Extra!");
-        dado = +random.Next(1, 7);
-        pJ = pJ + dado;
+        Console.WriteLine("Rodada Do Jogador!");
+        Console.Write("Pressione Enter para Rolar o dado");
+        Console.ReadLine();
+        int dado = RandomNumberGenerator.GetInt32(1, 7);
+
         Console.WriteLine("----------------------");
         Console.WriteLine($"Jogador rolou {dado}");
-        Console.WriteLine($"Jogador posicão: {pJ} na rodada extra!");
+        Console.WriteLine("----------------------");
+        posicaoJogador = posicaoJogador + dado;
+        Console.WriteLine($"Jogador posicão: {posicaoJogador}");
         Console.WriteLine("----------------------");
 
+        if (dado == 6)
+        {
+            Console.WriteLine($"Como o jogador rolou {dado} no dado ganhou uma rodada Extra!");
+            dado = RandomNumberGenerator.GetInt32(1, 7);
+            posicaoJogador = posicaoJogador + dado;
+            Console.WriteLine("----------------------");
+            Console.WriteLine($"Jogador rolou {dado}");
+            Console.WriteLine($"Jogador posicão: {posicaoJogador} na rodada extra!");
+            Console.WriteLine("----------------------");
+
+        }
+
+        if (posicaoJogador == 5 || posicaoJogador == 10 || posicaoJogador == 15)
+        {
+            Console.WriteLine("----------------------");
+            Console.WriteLine($"Jogador Caiu na posicão {posicaoJogador} e por isso ganhou mais 3 posicões!");
+            posicaoJogador = posicaoJogador + 3;
+            Console.WriteLine($"Jogador Posicão {posicaoJogador}");
+            Console.WriteLine("----------------------");
+        }
+        else if (posicaoJogador == 7 || posicaoJogador == 13 || posicaoJogador == 20)
+        {
+            Console.WriteLine("----------------------");
+            Console.WriteLine($"Jogador Caiu na posicão {posicaoJogador} e por isso perdeu 2 posicões!");
+            posicaoJogador = posicaoJogador - 2;
+            Console.WriteLine($"Jogador Posicão {posicaoJogador}");
+            Console.WriteLine("----------------------");
+        }
+
+        return posicaoJogador;
     }
 
-    if (pJ == 5 || pJ == 10 || pJ == 15)
+    static int RodadaDoComputador(int posicaoComputador)
     {
-        Console.WriteLine("----------------------");
-        Console.WriteLine($"Jogador Caiu na posicão {pJ} e por isso ganhou mais 3 posicões!");
-        pJ = pJ + 3;
-        Console.WriteLine($"Jogador Posicão {pJ}");
-        Console.WriteLine("----------------------");
-    }
-    else if (pJ == 7 || pJ == 13 || pJ == 20)
-    {
-        Console.WriteLine("----------------------");
-        Console.WriteLine($"Jogador Caiu na posicão {pJ} e por isso perdeu 2 posicões!");
-        pJ = pJ - 2;
-        Console.WriteLine($"Jogador Posicão {pJ}");
-        Console.WriteLine("----------------------");
-    }
-
-    if (pJ >= 30)
-    {
-        Console.WriteLine($"Jogador venceu chegando primeiro na posicão {pJ} o jogador é o vencedor!");
-        Console.WriteLine("-------------------------------------------------------------------------");
-        Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
-        jogo = false;
+        Console.WriteLine("Rodada Do Computador!");
+        Console.WriteLine("Pressione Enter Para Rolar o Dado!");
+        int dado = RandomNumberGenerator.GetInt32(1, 7);
         Console.ReadLine();
-        break;
-    }
 
-    dado = +random.Next(1, 7);
-    pM = pM + dado;
-    Console.WriteLine("----------------------");
-    Console.WriteLine($"Maquina rolou {dado}");
-    Console.WriteLine("----------------------");
-    Console.WriteLine($"Maquina p: {pM}");
-    Console.WriteLine("----------------------");
-
-    if (dado == 6)
-    {
-        Console.WriteLine($"Como a maquina rolou {dado} no dado ganhou uma rodada Extra!");
-        dado = +random.Next(1, 7);
-        pM = pM + dado;
+        posicaoComputador = posicaoComputador + dado;
         Console.WriteLine("----------------------");
         Console.WriteLine($"Maquina rolou {dado}");
-        Console.WriteLine($"Maquina p: {pM} na rodada extra!");
+        Console.WriteLine("----------------------");
+        Console.WriteLine($"Maquina posicao: {posicaoComputador}");
         Console.WriteLine("----------------------");
 
-    }
+        if (dado == 6)
+        {
+            Console.WriteLine($"Como a maquina rolou {dado} no dado ganhou uma rodada Extra!");
+            dado = RandomNumberGenerator.GetInt32(1, 7);
+            posicaoComputador = posicaoComputador + dado;
+            Console.WriteLine("----------------------");
+            Console.WriteLine($"Maquina rolou {dado}");
+            Console.WriteLine($"Maquina p: {posicaoComputador} na rodada extra!");
+            Console.WriteLine("----------------------");
 
-    if (pM == 5 || pM == 10 || pM == 15)
+        }
+
+        if (posicaoComputador == 5 || posicaoComputador == 10 || posicaoComputador == 15)
+        {
+            Console.WriteLine("----------------------");
+            Console.WriteLine($"Maquina Caiu na posicão {posicaoComputador} e por isso ganhou mais 3 posicões!");
+            posicaoComputador = posicaoComputador + 3;
+            Console.WriteLine($"Maquina Posicão {posicaoComputador}");
+            Console.WriteLine("----------------------");
+        }
+        else if (posicaoComputador == 7 || posicaoComputador == 13 || posicaoComputador == 20)
+        {
+            Console.WriteLine("----------------------");
+            Console.WriteLine($"Maquina Caiu na posicão {posicaoComputador} e por isso perdeu 2 posicões!");
+            posicaoComputador = posicaoComputador - 2;
+            Console.WriteLine($"Maquina Posicão {posicaoComputador}");
+            Console.WriteLine("----------------------");
+        }
+
+        return posicaoComputador;
+    }
+    static void Main(string[] args)
     {
+
+        Console.WriteLine("Corrida De Dados");
         Console.WriteLine("----------------------");
-        Console.WriteLine($"Maquina Caiu na posicão {pM} e por isso ganhou mais 3 posicões!");
-        pM = pM + 3;
-        Console.WriteLine($"Maquina Posicão {pM}");
-        Console.WriteLine("----------------------");
+        int posicaoJogador = 0;
+        int posicaoComputador = 0;
+        bool jogo = true;
+
+        while (jogo)
+        {
+
+            posicaoJogador = RodadaDoJogador(posicaoJogador);
+
+            if (posicaoJogador >= 30)
+            {
+                Console.WriteLine($"Jogador venceu chegando primeiro na posicão {posicaoJogador} o jogador é o vencedor!");
+                Console.WriteLine("-------------------------------------------------------------------------");
+                Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
+                jogo = false;
+                Console.ReadLine();
+                break;
+            }
+
+            posicaoComputador = RodadaDoComputador(posicaoComputador);
+
+
+            if (posicaoComputador >= 30)
+            {
+                Console.WriteLine($"Computador venceu chegando primeiro na posicão {posicaoComputador} o computador é o vencedor!");
+                Console.WriteLine("-------------------------------------------------------------------------");
+                Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
+                jogo = false;
+                Console.ReadLine();
+                break;
+            }
+        }
     }
-    else if (pM == 7 || pM == 13 || pM == 20)
-    {
-        Console.WriteLine("----------------------");
-        Console.WriteLine($"Maquina Caiu na posicão {pM} e por isso perdeu 2 posicões!");
-        pM = pM - 2;
-        Console.WriteLine($"Maquina Posicão {pM}");
-        Console.WriteLine("----------------------");
-    }
-
-
-    if (pM >= 30)
-    {
-        Console.WriteLine($"Maquina venceu chegando primeiro na posicão {pM} o jogador é o vencedor!");
-        Console.WriteLine("-------------------------------------------------------------------------");
-        Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
-        jogo = false;
-        Console.ReadLine();
-        break;
-    }
-
-
 }
+
+
+
