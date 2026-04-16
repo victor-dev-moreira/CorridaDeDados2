@@ -8,28 +8,24 @@ class Program
 {
     static void Main(string[] args)
     {
-        int posicaoJogador = 0;
-        int posicaoComputador = 0;
-        const int bonusAvanco = 3;
-        const int penalidade = 2;
-        const int limite = 30;
-        bool jogo = true;
 
-        while (jogo)
+        while (true)
         {
-            Console.WriteLine("Corrida De Dados");
-            Console.WriteLine("----------------------");
+            Jogador.posicao = 0;
+            Computador.posicao = 0;
+
             while (true)
             {
+                // Rodada do Jogador
+                Jogador.ExecutarRodada();
 
-                posicaoJogador = Jogador.ExecutarRodada(posicaoJogador, bonusAvanco, penalidade, limite);
-
-                if (posicaoJogador >= limite)
+                if (Jogador.JogadorVenceu())
                     break;
 
-                posicaoComputador = Computador.ExecutarRodada(posicaoComputador, bonusAvanco, penalidade, limite);
+                // Rodada do Computador
+                Computador.ExecutarRodada();
 
-                if (posicaoComputador >= limite)
+                if (Computador.ComputadorVenceu())
                     break;
 
             }
@@ -46,7 +42,7 @@ class Program
             }
             else
             {
-                jogo = false;
+                break;
             }
         }
     }
