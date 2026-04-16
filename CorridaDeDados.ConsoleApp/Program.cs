@@ -1,51 +1,11 @@
-﻿using System.Security.Cryptography;
-class Program
+﻿namespace CorridaDeDados.ConsoleApp;
+
+using System.Security.Cryptography;
+using CorridaDeDados.ConsoleApp.Entidades;
+
+class Computador
 {
-    static int RodadaDoJogador(int posicaoJogador, int bonusAvanco, int penalidade)
-    {
-        Console.WriteLine("Rodada Do Jogador!");
-        Console.Write("Pressione Enter para Rolar o dado! ");
-        Console.ReadLine();
-        int dado = RandomNumberGenerator.GetInt32(1, 7);
-
-        Console.WriteLine("----------------------");
-        Console.WriteLine($"Jogador rolou {dado}");
-        Console.WriteLine("----------------------");
-        posicaoJogador = posicaoJogador + dado;
-        Console.WriteLine($"Jogador posicão: {posicaoJogador}");
-        Console.WriteLine("----------------------");
-
-        if (dado == 6)
-        {
-            Console.WriteLine($"Como o jogador rolou {dado} no dado ganhou uma rodada Extra!");
-            dado = RandomNumberGenerator.GetInt32(1, 7);
-            posicaoJogador = posicaoJogador + dado;
-            Console.WriteLine("----------------------");
-            Console.WriteLine($"Jogador rolou {dado}");
-            Console.WriteLine($"Jogador posicão: {posicaoJogador} na rodada extra!");
-            Console.WriteLine("----------------------");
-
-        }
-
-        if (posicaoJogador == 5 || posicaoJogador == 10 || posicaoJogador == 15)
-        {
-            Console.WriteLine($"Jogador Caiu na posicão {posicaoJogador} e por isso ganhou mais 3 posicões!");
-            posicaoJogador = posicaoJogador + bonusAvanco;
-            Console.WriteLine($"Jogador Posicão {posicaoJogador}");
-            Console.WriteLine("----------------------");
-        }
-        else if (posicaoJogador == 7 || posicaoJogador == 13 || posicaoJogador == 20)
-        {
-            Console.WriteLine($"Jogador Caiu na posicão {posicaoJogador} e por isso perdeu 2 posicões!");
-            posicaoJogador = posicaoJogador - penalidade;
-            Console.WriteLine($"Jogador Posicão {posicaoJogador}");
-            Console.WriteLine("----------------------");
-        }
-
-        return posicaoJogador;
-    }
-
-    static int RodadaDoComputador(int posicaoComputador, int bonusAvanco, int penalidade)
+    public static int ExecutarRodada(int posicaoComputador, int bonusAvanco, int penalidade)
     {
         Console.WriteLine("Rodada Do Computador!");
         Console.Write("Pressione Enter Para Rolar o Dado!");
@@ -89,19 +49,7 @@ class Program
 
         return posicaoComputador;
     }
-
-    static void TesteJogador(int posicaoJogador, int limite)
-    {
-        if (posicaoJogador >= limite)
-        {
-            Console.WriteLine($"Jogador venceu chegando primeiro na posicão {posicaoJogador} o jogador é o vencedor!");
-            Console.WriteLine("-------------------------------------------------------------------------");
-            Console.WriteLine("Pressione Enter Para Finalizar o jogo!");
-            Console.ReadLine();
-        }
-    }
-
-    static void TesteComputador(int posicaoComputador, int limite)
+    public static void TesteComputador(int posicaoComputador, int limite)
     {
 
         if (posicaoComputador >= limite)
@@ -113,7 +61,9 @@ class Program
 
         }
     }
-
+}
+class Program
+{
     static void Main(string[] args)
     {
         int posicaoJogador = 0;
@@ -130,16 +80,14 @@ class Program
             while (true)
             {
 
-                posicaoJogador = RodadaDoJogador(posicaoJogador, bonusAvanco, penalidade);
-
-                TesteJogador(posicaoJogador, limite);
+                posicaoJogador = Jogador.ExecutarRodada(posicaoJogador, bonusAvanco, penalidade, limite);
 
                 if (posicaoJogador >= limite)
                     break;
 
-                posicaoComputador = RodadaDoComputador(posicaoComputador, bonusAvanco, penalidade);
+                posicaoComputador = Computador.ExecutarRodada(posicaoComputador, bonusAvanco, penalidade);
 
-                TesteComputador(posicaoComputador, limite);
+                Computador.TesteComputador(posicaoComputador, limite);
                 if (posicaoComputador >= limite)
                     break;
 
